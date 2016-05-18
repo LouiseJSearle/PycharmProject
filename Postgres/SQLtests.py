@@ -1,20 +1,21 @@
+# http://stackoverflow.com/questions/19472922/reading-external-sql-script-in-python
 
+def executeScriptsFromFile(filename, cursor):
+    # Open and read the file as a single buffer
+    fd = open(filename, 'r')
+    sqlFile = fd.read()
+    fd.close()
 
-# FUNCTION:
-# Open table, make list of pks.
-#
-# Read clusters from table into a list.
-#
-# For each cluster:
-#
-# clusterName =
-#
-# FUNCTION: Execute SQL script.
-# Open SQL file
-# Read file
-# Close file
-#
+    # all SQL commands (split on ';')
+    sqlCommands = sqlFile.split(';')
 
-# query = "SELECT * FROM photo_tourist_ams WHERE ST_Contains AS " + clusterName
-# cursor.execute(query)
-# results = cursor.fetchall()
+    # Execute every command from the input file
+    for command in sqlCommands:
+        # This will skip and report errors
+        # For example, if the tables do not yet exist, this will skip over
+        # the DROP TABLE commands
+        try:
+            cursor.execute(command)
+        except OperationalError, msg:
+            print "Command skipped: ", msg
+
