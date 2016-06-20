@@ -19,3 +19,5 @@ def executeScriptsFromFile(filename, cursor):
         except OperationalError, msg:
             print "Command skipped: ", msg
 
+# import sqlite3
+# from sqlite3 import OperationalError
